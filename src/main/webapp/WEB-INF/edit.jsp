@@ -23,7 +23,6 @@
 		<div class="p-5">
 			<div class="d-flex align-items-center justify-content-between border-bottom border-dark">
 				<h1>Edit Project</h1>
-				<a href="/projects">Home</a>
 			</div>
 			<div>
 			<form:form class="width mt-3" action="/projects/${project.id}" method="post" modelAttribute="project">

@@ -23,7 +23,7 @@
 		<div class="p-5">
 			<div class="d-flex align-items-center justify-content-between border-bottom border-dark">
 				<h1>Project Details</h1>
-				<a href="/projects">Home</a>
+				<a href="/projects">Return to Dashboard</a>
 			</div>
 			<div class="mt-3">
 				<h4>Project:</h4><p><c:out value="${project.title}"/></p>

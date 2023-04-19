@@ -23,7 +23,6 @@
 	<div class="p-5">
 		<div class="d-flex align-items-center justify-content-between border-bottom border-dark">
 			<h1>Create a Project!</h1>
-			<a href="/projects">Home</a>
 		</div>
 		<div class="mt-3 width">	
 			<form:form class="" action="/projects/create" method="post" modelAttribute="project">
