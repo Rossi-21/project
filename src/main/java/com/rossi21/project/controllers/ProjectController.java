@@ -122,7 +122,7 @@ public class ProjectController {
     }
     
 	// Delete a project method
-	@DeleteMapping("/projects/{id}/delete")
+	@DeleteMapping("/projects/{id}")
     public String destroy(@PathVariable("id") Long id) {
 		projectServ.deleteProject(id);
         return "redirect:/projects";

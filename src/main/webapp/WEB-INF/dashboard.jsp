@@ -57,44 +57,43 @@
 				</table>
 			</div>
 			<div>
-					<h4>Your Projects:</h4>
-					<table class="table table-hover table-borderless table-width" style="background-color:;">
-						<thead>
-							<tr>
-								<th>Project</th>
-								<th>Team Lead</th>
-								<th>Due Date</th>	
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="projects" items = "${projects}">
-								<c:if test="${projects.user.id == user.id || projects.joiner.id == user.id  }">
-									<tr>
-										<td style="width:25%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
-										<td style="width:20%;"><c:out value="${projects.user.firstName}"></c:out></td>
-										<td style="width:20%;"><c:out value="${projects.dueDate}"></c:out></td>
-										<c:choose>
-										<c:when test="${projects.user.id == user.id}">
-											<td class="d-flex align-items-center">
-												<a href="/projects/${projects.id}/edit">edit</a>
-												<form action="/projects/${projects.id}/delete" method="post">
-												    <input type="hidden" name="_method" value="delete">
-												    <input class="btn text-primary text-decoration-underline" type="submit" value="delete">
-												</form>
-											</td>
-										</c:when>
-										<c:otherwise>
-											<td ><a href="/projects/${projects.id}/leave">leave team</a></td>
-										</c:otherwise>
-									</c:choose>
-										
-									</tr>
-								</c:if>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
+				<h4>Your Projects:</h4>
+				<table class="table table-hover table-borderless table-width" style="background-color:;">
+					<thead>
+						<tr>
+							<th>Project</th>
+							<th>Team Lead</th>
+							<th>Due Date</th>	
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="projects" items = "${projects}">
+							<c:if test="${projects.user.id == user.id || projects.joiner.id == user.id  }">
+								<tr>
+									<td style="width:25%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
+									<td style="width:20%;"><c:out value="${projects.user.firstName}"></c:out></td>
+									<td style="width:20%;"><c:out value="${projects.dueDate}"></c:out></td>
+									<c:choose>
+									<c:when test="${projects.user.id == user.id}">
+										<td class="d-flex align-items-center">
+											<a href="/projects/${projects.id}/edit">edit</a>
+											<form action="/projects/${projects.id}" method="post">
+											    <input type="hidden" name="_method" value="delete">
+											    <input class="btn text-primary text-decoration-underline" type="submit" value="delete">
+											</form>
+										</td>
+									</c:when>
+									<c:otherwise>
+										<td ><a href="/projects/${projects.id}/leave">leave team</a></td>
+									</c:otherwise>
+								</c:choose>	
+								</tr>
+							</c:if>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </body>
