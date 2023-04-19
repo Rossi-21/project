@@ -59,10 +59,11 @@ public class User {
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     private List<Project> projects;
     
+    // enables task connection to projects
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     private List<Task> tasks;
     
-    // Enable the Join Function
+    // enable the Join Function
     @OneToMany(mappedBy="joiner", fetch = FetchType.LAZY)
     private List<Project> joinedProjects;
     
@@ -88,6 +89,7 @@ public class User {
     protected void onCreate(){
         this.createdAt = new Date();
     }
+	
     @PreUpdate
     protected void onUpdate(){
         this.updatedAt = new Date();

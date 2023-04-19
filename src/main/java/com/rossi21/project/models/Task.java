@@ -26,7 +26,7 @@ public class Task {
     private Long id;
 	
 	@NotEmpty(message="Description is required!")
-	   private String description;
+	private String description;
 	
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -53,6 +53,7 @@ public class Task {
     protected void onCreate(){
         this.createdAt = new Date();
     }
+    
     @PreUpdate
     protected void onUpdate(){
         this.updatedAt = new Date();

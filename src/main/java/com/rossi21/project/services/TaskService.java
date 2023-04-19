@@ -14,26 +14,35 @@ public class TaskService {
 
 	@Autowired
 	private TaskRepository taskRepo;
+	
 	// Creates a task
 	public Task createTask(Task t) {
+		
 		return taskRepo.save(t);
 	}
+	
 	// retrieves a task
 	public Task getOneById(Long id) {
 		Optional<Task> task = taskRepo.findById(id);
 		if (task.isEmpty()) {
 			return null;
 		}
+		
 		return task.get();
 	}
+	
 	// returns all the task's
     public List<Task> allTasks() {
+    	
         return taskRepo.findAll();
     }
+    
     // update the task info
     public Task  updateProject (Task t) {
+    	
 		return taskRepo.save(t);
 	}
+    
     // delete a task
 	public void deleteTask (Long id) {
 		taskRepo.deleteById(id);

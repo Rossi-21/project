@@ -35,6 +35,7 @@ public class UserController {
         model.addAttribute("newLogin", new LoginUser());
         return "index.jsp";
 	}
+	
 	// Registration Method
 	@PostMapping("/register")
     public String register(@Valid @ModelAttribute("newUser") User newUser, 
@@ -46,15 +47,19 @@ public class UserController {
             // Be sure to send in the empty LoginUser before 
             // re-rendering the page.
             model.addAttribute("newLogin", new LoginUser());
+            
             return "index.jsp";
         }
+        
         // No errors! 
         // Store their ID from the DB in session, 
         // in other words, log them in.
         User createdUser = userServ.create(newUser);
         session.setAttribute("userId", createdUser.getId());
+        
         return "redirect:/projects";
     }
+	
     //Login Method
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("newLogin") LoginUser newLogin, 
@@ -64,9 +69,12 @@ public class UserController {
         	model.addAttribute("newUser", new User());
         	return "index.jsp";
         }
+        
         session.setAttribute("userId", user.getId());
+        
         return "redirect:/projects";
     }
+    
     // Home Page
     @GetMapping("/projects")
     public String home(Model model, HttpSession session) {
@@ -78,12 +86,15 @@ public class UserController {
     	model.addAttribute("user", userServ.getOneById(userId));
     	List<Project> projects = projectServ.allProjects();
         model.addAttribute("projects", projects);
+        
     	return "dashboard.jsp";
     }
+    
     // Logout Method
     @GetMapping("/logout")
     public String logout(HttpSession session) {
     	session.removeAttribute("userId");
+    	
     	return "redirect:/";
     }
     

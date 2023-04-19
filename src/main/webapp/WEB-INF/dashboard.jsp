@@ -17,8 +17,11 @@
     <link rel="stylesheet" href="/css/main.css"> <!-- change to match your file/naming structure -->
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/app.js"></script><!-- change to match your file/naming structure -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="myfont">
 	<div class="container-fluid">
 		<div class="p-5">
 			<div class="d-flex align-items-center border-bottom border-dark">
@@ -43,9 +46,9 @@
 						<c:forEach var="projects" items = "${projects}">
 							<c:if test="${projects.joiner.id != user.id && projects.user.id != user.id}">
 								<tr>
-									<td style="width:30%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
-									<td style="width:25%;"><c:out value="${projects.user.firstName}"></c:out></td>
-									<td><c:out value="${projects.dueDate}"></c:out></td>
+									<td style="width:25%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
+									<td style="width:20%;"><c:out value="${projects.user.firstName}"></c:out></td>
+									<td style="width:20%;"><c:out value="${projects.dueDate}"></c:out></td>
 									<td><a href="/projects/${projects.id}/join">join team</a></td>		
 								</tr>
 							</c:if>
@@ -68,9 +71,9 @@
 							<c:forEach var="projects" items = "${projects}">
 								<c:if test="${projects.user.id == user.id || projects.joiner.id == user.id  }">
 									<tr>
-										<td style="width:30%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
-										<td style="width:18%;"><c:out value="${projects.user.firstName}"></c:out></td>
-										<td><c:out value="${projects.dueDate}"></c:out></td>
+										<td style="width:25%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
+										<td style="width:20%;"><c:out value="${projects.user.firstName}"></c:out></td>
+										<td style="width:20%;"><c:out value="${projects.dueDate}"></c:out></td>
 										<c:choose>
 										<c:when test="${projects.user.id == user.id}">
 											<td class="d-flex align-items-center">
@@ -82,7 +85,7 @@
 											</td>
 										</c:when>
 										<c:otherwise>
-											<td><a href="/projects/${projects.id}/leave">leave team</a></td>
+											<td ><a href="/projects/${projects.id}/leave">leave team</a></td>
 										</c:otherwise>
 									</c:choose>
 										

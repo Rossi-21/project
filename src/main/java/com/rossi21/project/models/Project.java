@@ -43,7 +43,6 @@ public class Project {
     @NotNull(message="Due Date is required!")
     @Future(message="Due Date must be in the future!")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-   
     private LocalDate dueDate;
     
     @Column(updatable=false)
@@ -85,6 +84,7 @@ public class Project {
     protected void onCreate(){
         this.createdAt = new Date();
     }
+    
     @PreUpdate
     protected void onUpdate(){
         this.updatedAt = new Date();

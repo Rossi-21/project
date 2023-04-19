@@ -40,10 +40,13 @@ public class ProjectController {
 		if (session.getAttribute("userId") == null) {
     		return "redirect:/";
     	}
+		
 		Long userId = (Long)session.getAttribute("userId");
     	model.addAttribute("user", userServ.getOneById(userId));
+    	
         return "new.jsp";
     }
+	
 	// Create a project method
 	@PostMapping("/projects/create")
 	public String createProject(@Valid @ModelAttribute("project") Project project, BindingResult result) {
@@ -54,6 +57,7 @@ public class ProjectController {
             return "redirect:/projects";
         }	
 	}
+	
 	// Display project info page
 	@GetMapping("/projects/{id}")
     public String show(@PathVariable("id") Long id, Model model, HttpSession session) {
@@ -61,18 +65,23 @@ public class ProjectController {
         model.addAttribute("project", project);
         Long userId = (Long)session.getAttribute("userId");
     	model.addAttribute("user", userServ.getOneById(userId));
+    	
         return "show.jsp";
     }
+	
 	// Edit a project page
 	@GetMapping("/projects/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model, HttpSession session) {
 		if (session.getAttribute("userId") == null) {
     		return "redirect:/";
     	}
+		
 		Project project = projectServ.getOneById(id);
         model.addAttribute("project", project);
+        
         return "edit.jsp";
     }
+	
 	// Update a project method
 	@RequestMapping(value="/projects/{id}", method=RequestMethod.PUT)
     public String update(@Valid @ModelAttribute("project") Project project, BindingResult result) {
@@ -83,30 +92,35 @@ public class ProjectController {
             return "redirect:/projects";
         }
     }
+	
 	// Join a team Method
     @GetMapping("/projects/{id}/join")
     public String joinProject(@PathVariable("id") Long id, HttpSession session) {
     	if(session.getAttribute("userId") == null) {
     		return "redirect:/";
     	}
+    	
     	Project project = projectServ.getOneById(id);
     	project.setJoiner(userServ.getOneById((Long)session.getAttribute("userId")));
     	projectServ.updateProject(project);
     	
     	return "redirect:/projects";
     }
+    
     // Leave team Method
     @GetMapping("/projects/{id}/leave")
     public String leaveProject(@PathVariable("id") Long id, HttpSession session) {
     	if(session.getAttribute("userId") == null) {
     		return "redirect:/";
     	}
+    	
     	Project project = projectServ.getOneById(id);
     	project.setJoiner(null);
     	projectServ.updateProject(project);
     	
     	return "redirect:/projects";
     }
+    
 	// Delete a project method
 	@DeleteMapping("/projects/{id}/delete")
     public String destroy(@PathVariable("id") Long id) {
@@ -126,18 +140,18 @@ public class ProjectController {
     	model.addAttribute("user", userServ.getOneById(userId));
     	List<Task> tasks = taskServ.allTasks();
         model.addAttribute("tasks", tasks);
+        
         return "newtask.jsp";
     }
 	
 	// Create a task method
 	@PostMapping("/projects/create/task")
 	public String createTask(@Valid @ModelAttribute("task") Task task, BindingResult result) {
-		
         if (result.hasErrors()) {
             return "newtask.jsp";
         } else {
         	taskServ.createTask(task);
-        	return "redirect:/projects";
+        	return String.format("redirect:/projects/%s/tasks", Long.toString(task.getProject().getId()) );
         }	
 	}
 
