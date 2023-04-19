@@ -27,7 +27,7 @@ public class TaskService {
 		return task.get();
 	}
 	// returns all the task's
-    public List<Task> allTask() {
+    public List<Task> allTasks() {
         return taskRepo.findAll();
     }
     // update the task info

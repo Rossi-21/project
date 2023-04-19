@@ -1,8 +1,10 @@
 package com.rossi21.project.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,13 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +26,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name="projects")
 public class Project {
+
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +39,10 @@ public class Project {
     private String description;
     
     @NotNull(message="Due Date is required!")
+    @Future(message="Due Date must be in the future!")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date dueDate;
+   
+    private LocalDate dueDate;
     
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -46,21 +50,18 @@ public class Project {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
     
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "projects_users", 
-            joinColumns = @JoinColumn(name = "project_id"), 
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-        )
-    private List<User> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
     
     
-    @OneToMany(mappedBy="project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="project", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> tasks;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="joiner_id")
     private User joiner;
+    
     
     public User getJoiner() {
 		return joiner;
@@ -72,7 +73,7 @@ public class Project {
 
 	public Project() {}
     
-    public Project(String title, String description, Date dueDate) {
+    public Project(String title, String description, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;  
@@ -111,11 +112,12 @@ public class Project {
 		this.description = description;
 	}
 
-	public Date getDueDate() {
+
+	public LocalDate getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(LocalDate dueDate) {
 		this.dueDate = dueDate;
 	}
 
@@ -135,13 +137,12 @@ public class Project {
 		this.updatedAt = updatedAt;
 	}
 
-
-	public List<User> getUsers() {
-		return users;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public List<Task> getTasks() {
@@ -151,6 +152,5 @@ public class Project {
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-    
     
 }

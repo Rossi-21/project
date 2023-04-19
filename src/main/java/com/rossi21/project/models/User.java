@@ -9,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -31,12 +28,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotEmpty(message="Firstname is required!")
-    @Size(min=3, max=30, message="Firstname must be between 3 and 30 characters")
+    @NotEmpty(message="First Name is required!")
+    @Size(min=3, max=30, message="First Name must be between 3 and 30 characters")
     private String firstName;
     
-    @NotEmpty(message="Lastname is required!")
-    @Size(min=3, max=30, message="Lastname must be between 3 and 30 characters")
+    @NotEmpty(message="Last Name is required!")
+    @Size(min=3, max=30, message="Last Name must be between 3 and 30 characters")
     private String lastName;
     
     @NotEmpty(message="Email is required!")
@@ -57,15 +54,13 @@ public class User {
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    
-    // enables our Many to Many connection with the other class
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "projects_users", 
-            joinColumns = @JoinColumn(name = "user_id"), 
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-        )
+   
+    // enables our One to Many connection with the other class
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     private List<Project> projects;
+    
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    private List<Task> tasks;
     
     // Enable the Join Function
     @OneToMany(mappedBy="joiner", fetch = FetchType.LAZY)
@@ -168,6 +163,14 @@ public class User {
 
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
 	}
 	
     

@@ -1,5 +1,7 @@
 package com.rossi21.project.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rossi21.project.models.Project;
+import com.rossi21.project.models.Task;
 import com.rossi21.project.services.ProjectService;
+import com.rossi21.project.services.TaskService;
 import com.rossi21.project.services.UserService;
 
 @Controller
@@ -27,9 +31,15 @@ public class ProjectController {
     private ProjectService projectServ;
 	@Autowired
     private UserService userServ;
-	// Create a book page
+	@Autowired
+    private TaskService taskServ;
+	
+	// Create a project page
 	@GetMapping("/projects/new")
     public String index(Model model, @ModelAttribute("project") Project project,  HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+    		return "redirect:/";
+    	}
 		Long userId = (Long)session.getAttribute("userId");
     	model.addAttribute("user", userServ.getOneById(userId));
         return "new.jsp";
@@ -44,7 +54,7 @@ public class ProjectController {
             return "redirect:/projects";
         }	
 	}
-	// Display book info page
+	// Display project info page
 	@GetMapping("/projects/{id}")
     public String show(@PathVariable("id") Long id, Model model, HttpSession session) {
 		Project project = projectServ.getOneById(id);
@@ -53,14 +63,17 @@ public class ProjectController {
     	model.addAttribute("user", userServ.getOneById(userId));
         return "show.jsp";
     }
-	// Edit a book page
+	// Edit a project page
 	@GetMapping("/projects/{id}/edit")
-    public String edit(@PathVariable("id") Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+    		return "redirect:/";
+    	}
 		Project project = projectServ.getOneById(id);
         model.addAttribute("project", project);
         return "edit.jsp";
     }
-	// Update a book method
+	// Update a project method
 	@RequestMapping(value="/projects/{id}", method=RequestMethod.PUT)
     public String update(@Valid @ModelAttribute("project") Project project, BindingResult result) {
         if (result.hasErrors()) {
@@ -70,7 +83,7 @@ public class ProjectController {
             return "redirect:/projects";
         }
     }
-	// Borrow a book Method
+	// Join a team Method
     @GetMapping("/projects/{id}/join")
     public String joinProject(@PathVariable("id") Long id, HttpSession session) {
     	if(session.getAttribute("userId") == null) {
@@ -82,8 +95,8 @@ public class ProjectController {
     	
     	return "redirect:/projects";
     }
-    // Return a book Method
-    @GetMapping("/books/{id}/leave")
+    // Leave team Method
+    @GetMapping("/projects/{id}/leave")
     public String leaveProject(@PathVariable("id") Long id, HttpSession session) {
     	if(session.getAttribute("userId") == null) {
     		return "redirect:/";
@@ -94,11 +107,38 @@ public class ProjectController {
     	
     	return "redirect:/projects";
     }
-	// Delete a book method
+	// Delete a project method
 	@DeleteMapping("/projects/{id}/delete")
     public String destroy(@PathVariable("id") Long id) {
 		projectServ.deleteProject(id);
         return "redirect:/projects";
     }
+	
+	@GetMapping("/projects/{id}/tasks")
+    public String index(@PathVariable("id") Long id, Model model, @ModelAttribute("task") Task task, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+    		return "redirect:/";
+    	}
+		
+		Project project = projectServ.getOneById(id);
+        model.addAttribute("project", project);
+		Long userId = (Long)session.getAttribute("userId");
+    	model.addAttribute("user", userServ.getOneById(userId));
+    	List<Task> tasks = taskServ.allTasks();
+        model.addAttribute("tasks", tasks);
+        return "newtask.jsp";
+    }
+	
+	// Create a task method
+	@PostMapping("/projects/create/task")
+	public String createTask(@Valid @ModelAttribute("task") Task task, BindingResult result) {
+		
+        if (result.hasErrors()) {
+            return "newtask.jsp";
+        } else {
+        	taskServ.createTask(task);
+        	return "redirect:/projects";
+        }	
+	}
 
 }

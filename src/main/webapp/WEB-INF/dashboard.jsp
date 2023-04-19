@@ -41,14 +41,38 @@
 					</thead>
 					<tbody>
 						<c:forEach var="projects" items = "${projects}">
-							<c:if test="${projects.joiner.id != user.id}">
+							<c:if test="${projects.joiner.id != user.id && projects.user.id != user.id}">
 								<tr>
 									<td style="width:30%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
-									<td style="width:25%;"><c:out value="${projects_users.user.fistName}"></c:out></td>
-									<td style="width:18%;"><c:out value="${projects.dueDate}"></c:out></td>							
-									<c:forEach var="projects_users" items="${projects_users}">
-									<c:choose>
-										<c:when test="${projects_users.user.id == user.id}">
+									<td style="width:25%;"><c:out value="${projects.user.firstName}"></c:out></td>
+									<td><c:out value="${projects.dueDate}"></c:out></td>
+									<td><a href="/projects/${projects.id}/join">join team</a></td>		
+								</tr>
+							</c:if>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+			<div>
+					<h4>Your Projects:</h4>
+					<table class="table table-hover table-borderless table-width" style="background-color:;">
+						<thead>
+							<tr>
+								<th>Project</th>
+								<th>Team Lead</th>
+								<th>Due Date</th>	
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="projects" items = "${projects}">
+								<c:if test="${projects.user.id == user.id || projects.joiner.id == user.id  }">
+									<tr>
+										<td style="width:30%;"><a href="/projects/${projects.id}"><c:out value="${projects.title}"></c:out></a></td>
+										<td style="width:18%;"><c:out value="${projects.user.firstName}"></c:out></td>
+										<td><c:out value="${projects.dueDate}"></c:out></td>
+										<c:choose>
+										<c:when test="${projects.user.id == user.id}">
 											<td class="d-flex align-items-center">
 												<a href="/projects/${projects.id}/edit">edit</a>
 												<form action="/projects/${projects.id}/delete" method="post">
@@ -58,18 +82,16 @@
 											</td>
 										</c:when>
 										<c:otherwise>
-											<td>
-												<a href="/projects/${projects.id}/join">join</a>
-											</td>
+											<td><a href="/projects/${projects.id}/leave">leave team</a></td>
 										</c:otherwise>
 									</c:choose>
-									</c:forEach>
-								</tr>
-							</c:if>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
+										
+									</tr>
+								</c:if>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
 		</div>
 	</div>
 </body>

@@ -38,6 +38,10 @@ public class Task {
     @JoinColumn(name="project_id")
     private Project project;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
+    
     public Task () {}
     
     public Task (String description) {
@@ -92,6 +96,14 @@ public class Task {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
     
     

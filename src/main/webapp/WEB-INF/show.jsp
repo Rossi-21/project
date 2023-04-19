@@ -12,13 +12,26 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Show Tacos</title>
+    <title>Show Project</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css"> <!-- change to match your file/naming structure -->
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/app.js"></script><!-- change to match your file/naming structure -->
 </head>
 <body>
-
+	<div class="container-fluid">
+		<div class="p-5">
+			<div class="d-flex align-items-center justify-content-between border-bottom border-dark">
+				<h1>Project Details</h1>
+				<a href="/projects">Home</a>
+			</div>
+			<div class="mt-3">
+				<h4>Project:</h4><p><c:out value="${project.title}"/></p>
+				<h4>Description:</h4><p><c:out value="${project.description}"/></p>
+				<h4>Due Date:</h4><p><c:out value="${project.dueDate}"/></p>
+			</div>
+			<a href="/projects/${project.id}/tasks">See Tasks!</a>
+		</div>
+	</div>
 </body>
 </html>

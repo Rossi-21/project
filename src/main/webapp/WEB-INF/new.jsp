@@ -43,10 +43,12 @@
 					<form:input class="form-control" path='dueDate' type='date'/>
 				</div>	
 				<div>
-					<form:errors path="users" class="error"/>
-					<form:input type="hidden" path="users" value="${user.id}" class="form-control"/>
+					<form:errors path="user" class="error"/>
+					<form:input type="hidden" path="user" value="${user.id}" class="form-control"/>
 				</div>	
+				<a href="/projects"><btn class="mt-3 btn btn-outline-dark me-3 rounded-0 myshadow">Cancel</btn></a>
 		   		<input class="mt-3 btn btn-outline-dark me-3 rounded-0 myshadow" type="submit" value="Create"/>
+		   		
    			</form:form>
 		</div>	
 	</div>	
